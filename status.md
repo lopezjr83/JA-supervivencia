@@ -10,12 +10,12 @@
 ```
 Fase 0 (Auditoría)           ✅ 100% COMPLETADA
 Fase 1 (Setup)               ✅ 100% COMPLETADA
-Fase 2 (Backend)             ⏳ 70% (game-engine + API + Socket.io)
-Fase 3 (Frontend Web)        ⏳ 0%
+Fase 2 (Backend)             ✅ 100% COMPLETADA
+Fase 3 (Frontend Web)        ⏳ 30% (páginas + componentes básicos)
 Fase 4 (Mobile)              ⏳ 0%
 Fase 5 (Pulido)              ⏳ 0%
 
-TOTAL: 52% (3.1 de 6 fases)
+TOTAL: 58% (3.5 de 6 fases)
 ```
 
 ---
@@ -32,7 +32,7 @@ TOTAL: 52% (3.1 de 6 fases)
 
 **Objetivo:** Lógica central del juego funcionando  
 **Duración estimada:** 2-3 sesiones  
-**Estado:** ⏳ 20% (game-engine básico creado)
+**Estado:** ✅ 100% COMPLETADA (4 sesiones)
 
 ### Fase 2 Checklist
 
@@ -60,7 +60,38 @@ TOTAL: 52% (3.1 de 6 fases)
 **⏳ Pendiente:**
 - [ ] Auth.js v5 rutas (login/signup/logout)
 - [ ] Test unitarios del game-engine
-- [ ] Frontend UI del juego (Fase 3)
+- [ ] WebSocket debugging en desarrollo
+
+---
+
+## Fase 3 — Frontend Web — UI del Juego
+
+**Objetivo:** Interfaz visual del juego funcional  
+**Duración estimada:** 2-3 sesiones  
+**Estado:** ⏳ 30% (páginas + componentes básicos)
+
+### Fase 3 Checklist
+
+**✅ Completado:**
+- [x] app/page.tsx (Home - crear/unirse partida)
+- [x] app/games/page.tsx (Listar partidas con filtros)
+- [x] app/game/[gameId]/page.tsx (Página del juego en vivo)
+- [x] components/game-board.tsx (Tablero 12×12 interactivo)
+- [x] components/inventory-panel.tsx (Stats: HP, dinero, XP, posición)
+- [x] components/dice-roller.tsx (UI dados + direcciones)
+- [x] Socket.io client (useSocket hook)
+- [x] Real-time sync de movimientos
+- [x] TypeScript build exitoso
+
+**⏳ Pendiente:**
+- [ ] Shop modal (comprar/vender)
+- [ ] Combat animation (enemigos)
+- [ ] Chat en juego (Sistema de mensajes)
+- [ ] Spectator mode (modo fantasma)
+- [ ] Leaderboard post-juego
+- [ ] Animaciones Framer Motion (movimiento, daño)
+- [ ] Dark mode optimización
+- [ ] Mobile responsive
 
 ### Archivos a crear
 
