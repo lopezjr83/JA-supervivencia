@@ -23,6 +23,21 @@ export async function POST(
       )
     }
 
+    // Crear usuario si no existe
+    let user = await prisma.user.findUnique({
+      where: { id: body.userId },
+    })
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          id: body.userId,
+          name: `Player-${body.userId.slice(0, 8)}`,
+          email: `${body.userId}@test.local`,
+          emailVerified: new Date(),
+        },
+      })
+    }
+
     // Obtener partida
     const game = await prisma.game.findUnique({
       where: { id: gameId },
