@@ -9,13 +9,13 @@
 
 ```
 Fase 0 (Auditoría)           ✅ 100% COMPLETADA
-Fase 1 (Setup)               ⏳ 30% (estructura + GitHub)
-Fase 2 (Backend)             ⏳ 0%
+Fase 1 (Setup)               ✅ 100% COMPLETADA
+Fase 2 (Backend)             ⏳ 20% (game-engine básico)
 Fase 3 (Frontend Web)        ⏳ 0%
 Fase 4 (Mobile)              ⏳ 0%
 Fase 5 (Pulido)              ⏳ 0%
 
-TOTAL: 22% (1.3 de 6 fases)
+TOTAL: 34% (2.2 de 6 fases)
 ```
 
 ---
@@ -26,19 +26,32 @@ TOTAL: 22% (1.3 de 6 fases)
 **Duración estimada:** 2-3 sesiones  
 **Estado:** ✅ COMPLETADA (1 sesión)
 
-### Checklist
+---
 
-- [x] Crear estructura Next.js 16 + TypeScript
-- [x] Configurar Tailwind CSS v4 + PostCSS
-- [x] Setup Prisma 7 + schema completo (User, Game, GameState, GameEvent, etc.)
-- [ ] Conectar Neon (DATABASE_URL + DIRECT_URL) — próximo paso
-- [ ] Configurar Auth.js v5 (rutas)
-- [ ] Setup Socket.io para WebSockets
-- [x] Crear CLAUDE.md con instrucciones del proyecto
-- [x] Crear .env.example con todas las vars
-- [x] Código en GitHub (https://github.com/lopezjr83/JA-supervivencia)
-- [ ] Test en localhost:3000 (`npm install` + `npm run dev`)
-- [ ] Deploy test a Vercel (linkar GitHub)
+## Fase 2 — Backend Game Engine + API
+
+**Objetivo:** Lógica central del juego funcionando  
+**Duración estimada:** 2-3 sesiones  
+**Estado:** ⏳ 20% (game-engine básico creado)
+
+### Fase 2 Checklist
+
+**✅ Completado:**
+- [x] GameEngine class con tipos + enums
+- [x] Generación tablero 12×12 (toroidal, aleatorio, determinístico)
+- [x] Sistema de combate (tipos + modificadores)
+- [x] Validación de movimiento (dados + dirección)
+- [x] Stats de enemigos (Slime, Goblin, Dragon, Spirit)
+
+**⏳ Pendiente:**
+- [ ] API routes para usar GameEngine
+  - [ ] POST /api/games (crear partida)
+  - [ ] GET /api/games (listar partidas)
+  - [ ] POST /api/games/[id]/join (unirse a partida)
+- [ ] Socket.io integration (eventos en tiempo real)
+- [ ] Auth.js v5 rutas (login/signup)
+- [ ] Test unitarios del game-engine
+- [ ] Integración Prisma + GameEngine (guardar estado)
 
 ### Archivos a crear
 
