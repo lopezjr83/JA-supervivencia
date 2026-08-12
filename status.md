@@ -10,12 +10,12 @@
 ```
 Fase 0 (Auditoría)           ✅ 100% COMPLETADA
 Fase 1 (Setup)               ✅ 100% COMPLETADA
-Fase 2 (Backend)             ⏳ 40% (game-engine + API routes)
+Fase 2 (Backend)             ⏳ 70% (game-engine + API + Socket.io)
 Fase 3 (Frontend Web)        ⏳ 0%
 Fase 4 (Mobile)              ⏳ 0%
 Fase 5 (Pulido)              ⏳ 0%
 
-TOTAL: 40% (2.4 de 6 fases)
+TOTAL: 52% (3.1 de 6 fases)
 ```
 
 ---
@@ -42,20 +42,25 @@ TOTAL: 40% (2.4 de 6 fases)
 - [x] Sistema de combate (tipos + modificadores)
 - [x] Validación de movimiento (dados + dirección)
 - [x] Stats de enemigos (Slime, Goblin, Dragon, Spirit)
-- [x] API routes para usar GameEngine
-  - [x] POST /api/games (crear partida con GameEngine)
-  - [x] GET /api/games (listar partidas activas/filtradas)
-  - [x] POST /api/games/[id]/join (unirse a partida)
-- [x] lib/prisma.ts (Prisma Client singleton)
-- [x] lib/api-types.ts (tipos para API)
-- [x] TypeScript build exitoso
+- [x] **5 API Routes REST**
+  - [x] POST /api/games (crear partida)
+  - [x] GET /api/games (listar partidas)
+  - [x] POST /api/games/[id]/join (unirse)
+  - [x] POST /api/games/[id]/move (movimiento + efectos)
+  - [x] POST /api/games/[id]/action (vender, comprar, atacar)
+- [x] **Socket.io WebSockets**
+  - [x] lib/socket.ts (event handlers: move, combat, sell, buy)
+  - [x] lib/socket-client.ts (React Hook useSocket())
+  - [x] server.js (servidor Node.js personalizado)
+  - [x] Actualizar npm scripts (dev → node server.js)
+- [x] Integración Prisma + GameEngine (guardar estado)
+- [x] lib/prisma.ts + lib/api-types.ts
+- [x] TypeScript build exitoso (6 rutas dinámicas)
 
 **⏳ Pendiente:**
-- [ ] Socket.io integration (eventos en tiempo real: move, combat, inventory)
-- [ ] Auth.js v5 rutas (login/signup)
+- [ ] Auth.js v5 rutas (login/signup/logout)
 - [ ] Test unitarios del game-engine
-- [ ] POST /api/games/[id]/move (procesar movimiento)
-- [ ] POST /api/games/[id]/action (procesar acciones: vender, comprar, atacar)
+- [ ] Frontend UI del juego (Fase 3)
 
 ### Archivos a crear
 
