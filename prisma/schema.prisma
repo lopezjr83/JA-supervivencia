@@ -1,0 +1,247 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Auth.js models
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // bcrypt hash; null si solo usa OAuth
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Game stats
+  gamesPlayed   Int       @default(0)
+  gamesWon      Int       @default(0)
+  totalDamageDealt    Int @default(0)
+  totalDamageReceived Int @default(0)
+  totalResourcesFound Int @default(0)
+  eloRating     Int       @default(1200)
+
+  accounts      Account[]
+  sessions      Session[]
+  gameParticipations GameParticipation[]
+
+  @@index([email])
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Game models
+model Game {
+  id            String    @id @default(cuid())
+  mode          GameMode  @default(PRIVATE) // PRIVATE o RANKED
+  status        GameStatus @default(WAITING)
+
+  maxPlayers    Int       @default(4)
+  currentPlayers Int      @default(0)
+
+  winner        String?   // userId del ganador
+
+  tableSeed     String    // seed para generar el tablero
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  startedAt     DateTime?
+  endedAt       DateTime?
+
+  participants  GameParticipation[]
+  events        GameEvent[]
+  boardState    GameState?
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum GameMode {
+  PRIVATE   // 2-4 jugadores, sin ranking
+  RANKED    // 6-8 jugadores, con ELO
+}
+
+enum GameStatus {
+  WAITING     // esperando jugadores
+  STARTED     // juego en curso
+  FINISHED    // juego terminado
+}
+
+model GameParticipation {
+  id            String    @id @default(cuid())
+  gameId        String
+  userId        String
+
+  position      Int       // (x, y) codificado como x*12+y
+  role          PlayerRole @default(WARRIOR)
+  hp            Int       @default(100)
+  money         Int       @default(0)
+  xp            Int       @default(0)
+
+  isAlive       Boolean   @default(true)
+  isSpectating  Boolean   @default(false)
+
+  stats         Json      @default("{}")  // {damageDone, damageReceived, resourcesFound, etc}
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  game          Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  inventory     InventoryItem[]
+
+  @@unique([gameId, userId])
+  @@index([gameId])
+  @@index([userId])
+  @@index([isAlive])
+}
+
+enum PlayerRole {
+  WARRIOR     // ATK alto, DEF media
+  MAGE        // ATK alto, DEF baja, VEL alta
+  SCOUT       // ATK medio, DEF baja, VEL muy alta
+  PALADIN     // ATK medio, DEF alta, HP alto
+}
+
+model GameState {
+  id            String    @id @default(cuid())
+  gameId        String    @unique
+
+  // Tablero
+  boardData     Json      // array[12][12] de casillas
+  currentTurn   Int       @default(1)
+  safeZone      Json      // {x1, y1, x2, y2} zona segura actual
+
+  updatedAt     DateTime  @updatedAt
+
+  game          Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+}
+
+model GameEvent {
+  id            String    @id @default(cuid())
+  gameId        String
+
+  type          EventType
+  description   String?
+  data          Json?     // data adicional del evento
+
+  createdAt     DateTime  @default(now())
+
+  game          Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([gameId])
+  @@index([createdAt])
+}
+
+enum EventType {
+  MOVE              // jugador se movió
+  RESOURCE_FOUND    // encontró recurso
+  ENEMY_ENCOUNTERED // encontró enemigo
+  COMBAT            // combate ocurrió
+  PLAYER_DIED       // jugador murió
+  ITEM_PURCHASED    // compró item
+  ITEM_SOLD         // vendió item
+  EVENT_TRIGGERED   // evento aleatorio
+  GAME_ENDED        // juego terminó
+}
+
+model InventoryItem {
+  id            String    @id @default(cuid())
+  participationId String
+
+  itemType      ItemType
+  quantity      Int       @default(1)
+
+  participation GameParticipation @relation(fields: [participationId], references: [id], onDelete: Cascade)
+
+  @@index([participationId])
+}
+
+enum ItemType {
+  // Recursos
+  WOOD
+  STONE
+  LEAF
+  CRYSTAL
+  MINERAL
+  GEM
+  ARTIFACT
+
+  // Armas
+  SWORD_FIRE
+  LANCE_WATER
+  BOW_ELECTRIC
+  STAFF_GRASS
+
+  // Armaduras
+  ARMOR_IRON
+  ARMOR_STONE
+  ARMOR_REFLECT
+
+  // Pociones
+  POTION_MINOR
+  POTION_NORMAL
+  POTION_MAJOR
+  ELIXIR_MAX
+
+  // Amplificadores
+  BOOTS_SPEED
+  SHIELD_INVULNERABILITY
+  STRENGTH_BOOST
+  INVISIBILITY
+
+  // Recursos exclusivos tienda
+  CRYSTAL_PRIMORDIAL
+  GEM_ETHEREAL
+
+  // Mochilas
+  BACKPACK_SMALL
+  BACKPACK_MEDIUM
+  BACKPACK_LARGE
+}
