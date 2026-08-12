@@ -9,13 +9,13 @@
 
 ```
 Fase 0 (Auditoría)           ✅ 100% COMPLETADA
-Fase 1 (Setup)               ⏳ 0% (iniciando)
+Fase 1 (Setup)               ⏳ 30% (estructura + GitHub)
 Fase 2 (Backend)             ⏳ 0%
 Fase 3 (Frontend Web)        ⏳ 0%
 Fase 4 (Mobile)              ⏳ 0%
 Fase 5 (Pulido)              ⏳ 0%
 
-TOTAL: 16% (1 de 6 fases)
+TOTAL: 22% (1.3 de 6 fases)
 ```
 
 ---
@@ -28,16 +28,17 @@ TOTAL: 16% (1 de 6 fases)
 
 ### Checklist
 
-- [ ] Crear estructura Next.js 16 + TypeScript
-- [ ] Configurar Tailwind CSS v4 + shadcn/ui
-- [ ] Setup Prisma 7 + schema básico (User, Game, GameState)
-- [ ] Conectar Neon (DATABASE_URL + DIRECT_URL)
-- [ ] Configurar Auth.js v5
+- [x] Crear estructura Next.js 16 + TypeScript
+- [x] Configurar Tailwind CSS v4 + PostCSS
+- [x] Setup Prisma 7 + schema completo (User, Game, GameState, GameEvent, etc.)
+- [ ] Conectar Neon (DATABASE_URL + DIRECT_URL) — próximo paso
+- [ ] Configurar Auth.js v5 (rutas)
 - [ ] Setup Socket.io para WebSockets
-- [ ] Crear CLAUDE.md con instrucciones del proyecto
-- [ ] Crear .env.example con todas las vars
-- [ ] Test en localhost:3000
-- [ ] Deploy test a Vercel
+- [x] Crear CLAUDE.md con instrucciones del proyecto
+- [x] Crear .env.example con todas las vars
+- [x] Código en GitHub (https://github.com/lopezjr83/JA-supervivencia)
+- [ ] Test en localhost:3000 (`npm install` + `npm run dev`)
+- [ ] Deploy test a Vercel (linkar GitHub)
 
 ### Archivos a crear
 
@@ -67,7 +68,9 @@ CLAUDE.md                              (instrucciones)
 
 ## Problemas Conocidos
 
-(ninguno aún)
+- Prisma 7 cambió format radical (datasource ahora en prisma.config.ts)
+  - **Solución:** Downgrade a Prisma 6.1.0 (stack VP estándar)
+  - Reinstalando ahora (npm install --legacy-peer-deps)
 
 ---
 
